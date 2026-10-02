@@ -760,25 +760,31 @@ const person = {
   .lane-body { padding: clamp(24px, 3.5vw, 40px); min-width: 0; }
   .lane-body h3 { font-size: clamp(1.35rem, 2.2vw, 1.75rem); line-height: 1.2; font-weight: 800; letter-spacing: -0.015em; color: #fff; }
 
-  .strip { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 34px; margin-top: 20px; }
+  /* Hanging indent: wrapped lines start 30px in, leaving room for their incoming arrow */
+  .strip { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 34px; margin-top: 20px; padding-left: 30px; }
+  .strip li:first-child { margin-left: -30px; }
   .strip li {
     position: relative; border: 1.5px solid var(--line); border-radius: 8px; padding: 6px 12px; font-size: 0.9rem; font-weight: 500;
     background: var(--bp-deep); white-space: nowrap;
   }
-  .strip li:not(:last-child)::after {
-    content: ''; position: absolute; right: -32px; top: 50%; width: 24px; border-top: 1.5px solid var(--line);
+  /* Arrows point INTO each step, so a wrapped line still starts with its incoming arrow */
+  .strip li + li::after {
+    content: ''; position: absolute; left: -28px; top: 50%; width: 20px; border-top: 1.5px solid var(--line);
   }
-  .strip li:not(:last-child)::before {
-    content: ''; position: absolute; right: -32px; top: 50%; margin-top: -5px; border: 5px solid transparent; border-left: 7px solid var(--line); border-right: 0;
+  .strip li + li::before {
+    content: ''; position: absolute; left: -10px; top: 50%; margin-top: -5px; border: 5px solid transparent; border-left: 7px solid var(--line); border-right: 0;
   }
+  .strip .strip-end { margin-left: 4px; }
   .strip .strip-end { border: 0; background: none; padding-left: 0; display: inline-flex; align-items: center; gap: 10px; font-weight: 700; color: var(--accent); }
   .strip-end .ev { width: 24px; height: 24px; border-color: var(--accent); }
 
   .gemi { display: grid; grid-template-columns: 1fr auto; gap: 24px 40px; align-items: center; }
   .more { margin-top: 18px; font-weight: 700; }
   .phones { display: flex; gap: 14px; padding-top: 18px; }
-  .phone { width: 150px; height: auto; border-radius: 18px; border: 2px solid var(--line); display: block; flex: none; }
-  .phone:nth-child(2) { transform: translateY(-18px); }
+  .phone {
+    width: 150px; height: auto; border-radius: 18px 18px 0 0; border: 2px solid var(--line); border-bottom: 0; display: block; flex: none;
+    mask-image: linear-gradient(#000 72%, transparent);
+  }
 
   .earlier { margin-top: 48px; }
   .sub-h { font-size: 1.125rem; font-weight: 700; color: #fff; margin-bottom: 18px; }
@@ -862,11 +868,11 @@ const person = {
     .feature { padding: 20px; }
     .art-scroll { margin-inline: -20px; padding-inline: 20px; mask-image: linear-gradient(90deg, #000 85%, transparent); }
     .lane { grid-template-columns: 40px 1fr; }
-    .strip { gap: 8px; }
-    .strip li:not(:last-child)::before, .strip li:not(:last-child)::after { display: none; }
+    .strip { gap: 8px; padding-left: 0; }
+    .strip li:first-child { margin-left: 0; }
+    .strip li + li::before, .strip li + li::after { display: none; }
     .phones { overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
     .phone { width: 160px; scroll-snap-align: start; }
-    .phone:nth-child(2) { transform: none; }
     .contact { padding-left: 0; }
     .contact .ev-big { position: static; display: block; margin-bottom: 20px; }
   }

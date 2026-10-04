@@ -8,9 +8,9 @@ Portfolio Mohammad Aufa Hanif, built with Astro.
 - Layout:
   - `src/pages/index.astro` puts the sections in order
   - `src/layouts/Base.astro` holds `<head>`, meta and Open Graph tags
-  - `src/components/` has one file per section, each with its own CSS
-  - `src/components/diagrams/` holds the hand-drawn BPMN and wireframe SVGs
-  - `src/styles/global.css` holds colors, base styles and shared BPMN shapes
+  - `src/components/` has one file per section, each with its own scoped CSS
+  - `src/styles/global.css` holds colour tokens (light and dark), type, buttons and links
+- Design: clean editorial base with Persona-style slanted accents; follows the system light or dark theme, no JavaScript
 - Docker: `docker build -t porto-aufa .` then `docker run -d -p 8080:80 porto-aufa` (http://localhost:8080)
   - `nginx.conf` adds security headers (CSP etc.). Uploading `dist/` to other hosting skips them; set the same headers there
 - CV: edit `cv/cv.html`, then export the ATS-friendly PDF:

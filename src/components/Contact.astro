@@ -1,31 +1,36 @@
 ---
-import { cv } from '../data/content';
+import { site } from '../data/content';
 ---
 
-<!-- End event -->
-<section id="contact" class="wrap contact" aria-labelledby="contact-h">
-  <span class="ev ev-end ev-big" aria-hidden="true"></span>
-  <h2 id="contact-h">Hiring a Business, System or Project Analyst?</h2>
-  <p class="c-sub">Based in Indonesia. Email is the fastest way to reach me.</p>
-  <a class="mail" href="mailto:aufahanif85@gmail.com">aufahanif85@gmail.com</a>
-  <p class="elsewhere">
-    <a href="https://www.linkedin.com/in/aufahanif/" target="_blank" rel="noopener">LinkedIn<span class="sr"> (new tab)</span></a>
-    <a href="https://github.com/AHanif52" target="_blank" rel="noopener">GitHub<span class="sr"> (new tab)</span></a>
-    <a href={cv} target="_blank" rel="noopener">Download CV<span class="sr"> (PDF, new tab)</span></a>
-  </p>
+<section id="contact" class="contact" aria-labelledby="contact-h">
+  <div class="wrap" data-reveal>
+    <h2 id="contact-h">Hiring an analyst?</h2>
+    <p class="lead">Open to Business, System and Project Analyst roles. Email is the fastest way to reach me.</p>
+    <a class="mail" href={`mailto:${site.email}`}>{site.email}</a>
+    <p class="else">
+      <a class="link" href={site.linkedin} target="_blank" rel="noopener">LinkedIn<span class="sr"> (new tab)</span></a>
+      <a class="link" href={site.github} target="_blank" rel="noopener">GitHub<span class="sr"> (new tab)</span></a>
+      <a class="link" href={site.cv} target="_blank" rel="noopener">Download CV<span class="sr"> (PDF, new tab)</span></a>
+    </p>
+    <p class="foot">Mohammad Aufa Hanif, Tegal, Indonesia</p>
+  </div>
 </section>
 
-<style is:global>
-  /* End event */
-  .contact { margin-top: 160px; padding-left: 40px; position: relative; }
-  .contact .ev-big { position: absolute; left: -12px; top: -84px; }
-  .contact h2 { font-size: clamp(1.9rem, 4.4vw, 3.2rem); line-height: 1.08; font-weight: 800; letter-spacing: -0.025em; max-width: 18ch; color: #fff; }
-  .c-sub { margin-top: 12px; color: var(--muted); }
-  .mail { display: inline-block; margin-top: 20px; font-size: clamp(1.3rem, 3.6vw, 2.2rem); font-weight: 800; text-decoration-thickness: 5px; text-underline-offset: 8px; overflow-wrap: anywhere; }
-  .elsewhere { margin-top: 28px; display: flex; gap: 24px; flex-wrap: wrap; font-weight: 500; }
+<style>
+  /* The page ends on a tinted plane with a leaning top edge, echoing the hero */
+  .contact { margin-top: 40px; padding-block: 220px 56px; background: var(--surface); clip-path: polygon(0 110px, 100% 0, 100% 100%, 0 100%); scroll-margin-top: 0; }
+  .mail {
+    display: inline-block; margin-top: 48px; font-size: clamp(1.5rem, 5.6vw, 5.2rem); font-weight: 600; letter-spacing: -0.045em; line-height: 1.1;
+    text-decoration: none; overflow-wrap: anywhere;
+    background: linear-gradient(var(--acc), var(--acc)) 0 100% / 100% 0.09em no-repeat; padding-bottom: 0.08em;
+    transition: background-size 0.3s var(--ease), color 0.3s;
+  }
+  .mail:hover { background-size: 100% 100%; color: #161614; }
+  .else { display: flex; flex-wrap: wrap; gap: 16px 36px; margin-top: 48px; }
+  .foot { margin-top: 120px; color: var(--mute); font-size: 0.95rem; }
 
-  @media (max-width: 640px) {
-    .contact { padding-left: 0; }
-    .contact .ev-big { position: static; display: block; margin-bottom: 20px; }
+  @media (max-width: 720px) {
+    .contact { padding-block: 130px 40px; clip-path: polygon(0 56px, 100% 0, 100% 100%, 0 100%); }
+    .foot { margin-top: 72px; }
   }
 </style>

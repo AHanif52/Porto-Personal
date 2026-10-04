@@ -1,88 +1,73 @@
 ---
 import { featured } from '../data/content';
-import ApprovalFlow from './diagrams/ApprovalFlow.astro';
-import DashboardWireframe from './diagrams/DashboardWireframe.astro';
 ---
 
-<article class="feature">
-  <p class="f-meta"><b>{featured.client}</b> {featured.year}</p>
-  <h3>{featured.title}</h3>
-  <p class="summary">{featured.summary}</p>
-
-  <dl class="figs">
-    {featured.figures.map((f) => (
-      <div>
-        <dt>{f.label}</dt>
-        <dd>{f.n}</dd>
+<!-- The main project sits on a leaning tinted band, the one place the page changes plane before Contact -->
+<section id="work" class="band" aria-labelledby="feat-h">
+  <div class="wrap">
+    <div class="grid">
+      <div data-reveal>
+        <p class="meta">{featured.meta}</p>
+        <h2 id="feat-h">{featured.title}</h2>
+        <p class="role slant">{featured.role}</p>
+        <p class="lead">{featured.summary}</p>
       </div>
-    ))}
-  </dl>
-
-  <div class="art-tabs" role="tablist" aria-label="Project artifacts">
-    <button type="button" role="tab" id="tab-process" aria-controls="art-process" aria-selected="true">Process (BPMN)</button>
-    <button type="button" role="tab" id="tab-dash" aria-controls="art-dash" aria-selected="false" tabindex="-1">Dashboard wireframe</button>
+      <!-- Status screen: each figure is a leaning bar, stepped like a menu list -->
+      <dl class="status slant" data-reveal="bars">
+        {featured.stats.map((s, i) => (
+          <div style={`--i:${i}`}>
+            <dt>{s.label}</dt>
+            <dd>{s.n}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+    <ul class="did">
+      {featured.did.map((d, i) => (
+        <li data-reveal style={`--i:${i}`}>
+          <h3 class="slant">{d.head}</h3>
+          <p>{d.text}</p>
+        </li>
+      ))}
+    </ul>
   </div>
-  <figure class="artifact" id="art-process" role="tabpanel" aria-labelledby="tab-process">
-    <ApprovalFlow />
-    <figcaption>Simplified and anonymised. The real flow has more roles, checks and notifications.</figcaption>
-  </figure>
-  <figure class="artifact" id="art-dash" role="tabpanel" aria-labelledby="tab-dash">
-    <DashboardWireframe />
-    <figcaption>Wireframe recreated from my clickable mockup. Layout reuses the client's existing dashboard pattern, so no new components were needed.</figcaption>
-  </figure>
-  <script>
-    // Two artifacts, one visible at a time. Without JS both stay visible.
-    const tabs = [...document.querySelectorAll('.art-tabs [role=tab]')];
-    const show = (t) => tabs.forEach((x) => {
-      const on = x === t;
-      x.setAttribute('aria-selected', String(on));
-      x.tabIndex = on ? 0 : -1;
-      document.getElementById(x.getAttribute('aria-controls')).hidden = !on;
-    });
-    tabs.forEach((t, i) => {
-      t.addEventListener('click', () => show(t));
-      t.addEventListener('keydown', (e) => {
-        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-        const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
-        show(next); next.focus();
-      });
-    });
-    show(tabs[0]);
-  </script>
+</section>
 
-  <ul class="did">
-    {featured.did.map((d) => <li>{d}</li>)}
-  </ul>
-</article>
+<style>
+  .band { background: var(--surface); padding-block: 210px 200px; clip-path: polygon(0 110px, 100% 0, 100% calc(100% - 110px), 0 100%); scroll-margin-top: 0; }
+  .grid { display: grid; grid-template-columns: 6fr 5fr; gap: 72px; align-items: center; }
+  h2 { max-width: 15ch; }
+  .role { margin-top: 18px; font-size: 1.35rem; letter-spacing: 0.02em; }
+  .lead { margin-top: 20px; }
 
-<style is:global>
-  /* Featured project: the peak of the page */
-  .feature { border: 2px solid var(--line); border-radius: 4px; background: rgb(11 46 80 / 0.55); padding: clamp(24px, 4vw, 48px); }
-  .f-meta { color: var(--muted); }
-  .f-meta b { color: var(--line); margin-right: 8px; }
-  .feature h3 { font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.12; font-weight: 800; letter-spacing: -0.02em; color: #fff; margin-top: 8px; max-width: 22ch; }
-  .summary { margin-top: 12px; max-width: 64ch; }
-  .figs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin: 28px 0; padding-block: 24px; border-block: 1.5px solid var(--faint); }
-  .figs div { display: flex; flex-direction: column; gap: 6px; }
-  .figs dd { order: -1; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--accent); }
-  .figs dt { color: var(--muted); font-size: 0.95rem; }
-  .artifact { margin-bottom: 28px; }
-  .art-tabs { display: flex; gap: 4px; margin-bottom: 14px; }
-  .art-tabs button {
-    font: 600 0.95rem var(--sans); color: var(--muted); background: none; cursor: pointer;
-    border: 1.5px solid var(--muted); border-radius: 8px; padding: 8px 14px;
+  .status { display: grid; gap: 12px; padding-right: 28px; }
+  .status div {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 24px;
+    margin-left: calc(var(--i) * 26px); padding: 2px 34px 2px 28px;
+    background: var(--bg); transform: skewX(var(--skew));
   }
-  .art-tabs button:hover { border-color: var(--line); color: var(--line); }
-  .art-tabs button[aria-selected='true'] { color: var(--bp-deep); background: var(--line); border-color: var(--line); }
-  .art-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .art-scroll svg { min-width: 640px; }
+  .status div:first-child { background: var(--ink); color: var(--bg); box-shadow: 10px 9px 0 var(--acc); margin-bottom: 8px; }
+  dt { font-size: 1.5rem; letter-spacing: 0.01em; }
+  dd { font-size: clamp(3.6rem, 6vw, 5.4rem); line-height: 1; }
+
+  /* The bars slide in one after another, once, when the panel enters the viewport */
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .status div { opacity: 0; transform: translateX(-80px) skewX(var(--skew)); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); transition-delay: calc(var(--i) * 110ms); }
+    .status.is-in div { opacity: 1; transform: skewX(var(--skew)); }
+  }
+
+  .did { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px 48px; margin-top: 88px; }
+  .did h3 { font-size: 1.5rem; letter-spacing: 0.02em; padding-bottom: 12px; border-bottom: 2px solid var(--ink); }
+  .did p { color: var(--mute); margin-top: 14px; }
 
   @media (max-width: 980px) {
-    .figs { grid-template-columns: 1fr 1fr; }
+    .grid { grid-template-columns: 1fr; gap: 56px; align-items: start; }
+    .did { grid-template-columns: 1fr; gap: 28px; margin-top: 64px; }
   }
-
-  @media (max-width: 640px) {
-    .feature { padding: 20px; }
-    .art-scroll { margin-inline: -20px; padding-inline: 20px; mask-image: linear-gradient(90deg, #000 85%, transparent); }
+  @media (max-width: 720px) {
+    .band { padding-block: 120px 116px; clip-path: polygon(0 56px, 100% 0, 100% calc(100% - 56px), 0 100%); }
+    .status { padding-inline: 12px 18px; }
+    .status div { margin-left: calc(var(--i) * 10px); padding-inline: 20px 22px; }
+    dt { font-size: 1.2rem; }
   }
 </style>

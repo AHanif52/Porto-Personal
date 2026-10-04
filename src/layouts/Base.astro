@@ -1,8 +1,7 @@
 ---
-import '@fontsource-variable/schibsted-grotesk';
-import '@fontsource/kalam/400.css';
+import '@fontsource/barlow-condensed/latin-800-italic.css';
 import '../styles/global.css';
-import { title, description, person } from '../data/content';
+import { site, person } from '../data/content';
 
 const ogImage = new URL('/og.png', Astro.site);
 ---
@@ -12,26 +11,40 @@ const ogImage = new URL('/og.png', Astro.site);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0f3a63" />
-    <title>{title}</title>
-    <script type="application/ld+json" set:html={JSON.stringify(person)} />
-    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f7f6f3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121211" media="(prefers-color-scheme: dark)" />
+    <title>{site.title}</title>
+    <meta name="description" content={site.description} />
     <link rel="canonical" href={Astro.site} />
+    <script type="application/ld+json" set:html={JSON.stringify(person)} />
     <!-- Link previews in LinkedIn, WhatsApp and email -->
     <meta property="og:type" content="profile" />
     <meta property="og:url" content={Astro.site} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={site.title} />
+    <meta property="og:description" content={site.description} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Mohammad Aufa Hanif, Project Analyst, on a blueprint background with a BPMN flow" />
+    <meta property="og:image:alt" content="Aufa Hanif, Project Analyst. Client requests in, buildable specs out." />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230f3a63'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23FFD84A' stroke-width='3'/%3E%3C/svg%3E" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
-
     <slot />
+    <script>
+      // Reveal blocks once as they scroll into view. The hidden state lives in CSS behind (scripting: enabled).
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            e.target.classList.add('is-in');
+            io.unobserve(e.target);
+          }
+        },
+        { rootMargin: '0px 0px -12% 0px' },
+      );
+      document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+    </script>
   </body>
 </html>

@@ -1,0 +1,55 @@
+---
+import { experience } from '../data/content';
+---
+
+<section id="experience" class="wrap sec" aria-labelledby="exp-h">
+  <div class="grid">
+    <h2 id="exp-h">Experience</h2>
+    <div class="groups">
+      {experience.map((g) => (
+        <div data-reveal>
+          <h3 class="slant">{g.group}</h3>
+          <ol>
+            {g.items.map((t) => (
+              <li>
+                <p class="when">{t.when}</p>
+                <div>
+                  <p class="what">{t.what}</p>
+                  <p class="where">{t.where}</p>
+                  {t.note && <p class="note">{t.note}</p>}
+                  {t.points && (
+                    <ul class="ticks">
+                      {t.points.map((x) => <li>{x}</li>)}
+                    </ul>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid { display: grid; grid-template-columns: 4fr 8fr; gap: 56px; align-items: start; }
+  h2 { position: sticky; top: 104px; }
+  .groups { display: grid; gap: 64px; }
+  h3 { font-size: 1.6rem; letter-spacing: 0.01em; padding-bottom: 14px; border-bottom: 2px solid var(--ink); }
+  ol { display: grid; gap: 28px; margin-top: 28px; }
+  li { display: grid; grid-template-columns: 190px 1fr; gap: 8px 32px; }
+  .when { color: var(--mute); font-size: 1rem; font-variant-numeric: tabular-nums; padding-top: 4px; }
+  .what { font-weight: 600; font-size: 1.3rem; letter-spacing: -0.02em; line-height: 1.25; }
+  .where { margin-top: 2px; }
+  .note { color: var(--mute); margin-top: 6px; max-width: 52ch; font-size: 1.05rem; }
+  .ticks { margin-top: 12px; display: grid; gap: 8px; color: var(--mute); font-size: 1.05rem; max-width: 56ch; }
+  .ticks li { display: block; position: relative; padding-left: 26px; }
+  .ticks li::before { content: ''; position: absolute; left: 2px; top: 0.62em; width: 12px; height: 6px; background: var(--acc); transform: skewX(-32deg); }
+
+  @media (max-width: 860px) {
+    .grid { grid-template-columns: 1fr; gap: 44px; }
+    h2 { position: static; }
+    li { grid-template-columns: 1fr; }
+  }
+</style>

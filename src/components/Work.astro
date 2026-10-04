@@ -1,143 +1,63 @@
 ---
-import { Image } from 'astro:assets';
-import { lanes, earlier, gemi } from '../data/content';
-import Featured from './Featured.astro';
+import { projects, earlier } from '../data/content';
 ---
 
-<!-- Work: featured project with its anonymised BPMN, then the rest of the pool -->
-<section id="work" class="wrap block" aria-labelledby="work-h">
-  <h2 id="work-h" class="node-h">Selected work</h2>
-
-  <Featured />
-
-  <div class="pool">
-    {lanes.map((l) => (
-      <article class="lane">
-        <p class="lane-label"><span>{l.client}</span><span class="lane-year">{l.year}</span></p>
-        <div class="lane-body">
-          <h3>{l.title}</h3>
-          <p class="summary">{l.summary}</p>
-          <ol class="strip" aria-label={`${l.title} flow`}>
-            {l.flow.map((f) => <li>{f}</li>)}
-            <li class="strip-end"><span class="ev ev-end" aria-hidden="true"></span>{l.end}</li>
-          </ol>
-          <ul class="did">
-            {l.did.map((d) => <li>{d}</li>)}
+<section class="wrap sec" aria-labelledby="more-h">
+  <h2 id="more-h">More work</h2>
+  <ul class="projects">
+    {projects.map((p) => (
+      <li data-reveal>
+        <div>
+          <p class="meta">{p.meta}</p>
+          <h3>{p.title}</h3>
+          <p class="role slant">{p.role}</p>
+        </div>
+        <div>
+          <p class="sum">{p.summary}</p>
+          <ul class="ticks">
+            {p.did.map((d) => <li>{d}</li>)}
           </ul>
         </div>
-      </article>
+      </li>
     ))}
+  </ul>
 
-    <article class="lane">
-      <p class="lane-label"><span>Side project</span><span class="lane-year">2026</span></p>
-      <div class="lane-body gemi">
-        <div>
-          <h3>{gemi.title}</h3>
-          <p class="summary">{gemi.summary}</p>
-          <ol class="strip" aria-label="Gemi flow">
-            {gemi.flow.map((f) => <li>{f}</li>)}
-            <li class="strip-end"><span class="ev ev-end" aria-hidden="true"></span>{gemi.end}</li>
-          </ol>
-          <p class="more"><a href={gemi.url} target="_blank" rel="noopener">Source on GitHub<span class="sr"> (new tab)</span></a></p>
-        </div>
-        <div class="phones">
-          {gemi.shots.map((s) => (
-            <a href={s.src.src} target="_blank" rel="noopener" class="phone-link">
-              <Image src={s.src} alt={s.alt} widths={[240, 480]} sizes="160px" class="phone" />
-              <span class="sr"> (full size, new tab)</span>
-            </a>
-          ))}
-        </div>
-      </div>
-    </article>
-  </div>
-
-  <div class="earlier">
-    <h3 class="sub-h">Earlier projects</h3>
-    <ul>
-      {earlier.map((e) => (
-        <li>
-          <p class="e-meta"><b>{e.client}</b> {e.year}</p>
-          <p class="e-title">{e.title}</p>
-          <p class="e-text">{e.text}</p>
-        </li>
-      ))}
-    </ul>
-  </div>
+  <h3 class="sub slant">Earlier</h3>
+  <ul class="rows">
+    {earlier.map((e) => (
+      <li>
+        <h4>{e.title}</h4>
+        <p>{e.text}</p>
+        <span>{e.year}</span>
+      </li>
+    ))}
+  </ul>
 </section>
 
-<style is:global>
-  /* Outcome bullets, shared by the featured project and the lanes */
-  .did { margin-top: 18px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 32px; color: var(--muted); max-width: 920px; }
-  .did li { padding-left: 18px; position: relative; font-size: 0.975rem; }
-  .did li::before { content: ''; position: absolute; left: 0; top: 0.75em; width: 8px; height: 2px; background: var(--line); }
+<style>
+  .projects { margin-top: 64px; border-top: 2px solid var(--ink); }
+  .projects > li { display: grid; grid-template-columns: 5fr 7fr; gap: 24px 72px; padding-block: 44px; border-bottom: 1px solid var(--line); }
+  .meta { margin-bottom: 10px; }
+  .projects h3 { font-size: clamp(1.6rem, 2.4vw, 2.1rem); letter-spacing: -0.035em; max-width: 18ch; text-wrap: balance; }
+  .role { margin-top: 12px; font-size: 1.2rem; letter-spacing: 0.02em; }
+  .sum { font-size: 1.2rem; max-width: 52ch; }
+  .ticks { margin-top: 18px; display: grid; gap: 8px; color: var(--mute); }
+  /* Leaning tick instead of a bullet */
+  .ticks li { position: relative; padding-left: 26px; }
+  .ticks li::before { content: ''; position: absolute; left: 2px; top: 0.62em; width: 12px; height: 6px; background: var(--acc); transform: skewX(-32deg); }
 
-  /* Pool and lanes for the other projects */
-  .lane .did { grid-template-columns: repeat(2, 1fr); max-width: 760px; }
-  .pool { border: 2px solid var(--line); border-radius: 4px; background: rgb(11 46 80 / 0.55); margin-top: 32px; }
-  .lane { display: grid; grid-template-columns: 64px 1fr; }
-  .lane + .lane { border-top: 2px solid var(--line); }
-  .lane-label {
-    border-left: 2px solid var(--line); writing-mode: vertical-rl; transform: rotate(180deg);
-    display: flex; align-items: center; justify-content: center; gap: 12px; padding: 20px 0; font-weight: 700; color: #fff;
-    background: var(--bp-lane);
-  }
-  .lane-year { font-weight: 400; color: var(--muted); }
-  .lane-body { padding: clamp(24px, 3.5vw, 40px); min-width: 0; }
-  .lane-body h3 { font-size: clamp(1.35rem, 2.2vw, 1.75rem); line-height: 1.2; font-weight: 800; letter-spacing: -0.015em; color: #fff; }
+  .sub { margin-top: 80px; font-size: 1.6rem; letter-spacing: 0.02em; }
+  .rows { margin-top: 12px; }
+  .rows li { display: grid; grid-template-columns: 5fr 7fr 90px; gap: 8px 72px; align-items: baseline; padding-block: 16px; }
+  h4 { margin: 0; font-size: 1.15rem; font-weight: 600; letter-spacing: -0.02em; }
+  .rows p, .rows span { color: var(--mute); font-size: 1.05rem; }
+  .rows span { font-variant-numeric: tabular-nums; text-align: right; }
 
-  /* Hanging indent: wrapped lines start 30px in, leaving room for their incoming arrow */
-  .strip { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 34px; margin-top: 20px; padding-left: 30px; }
-  .strip li:first-child { margin-left: -30px; }
-  .strip li {
-    position: relative; border: 1.5px solid var(--line); border-radius: 8px; padding: 6px 12px; font-size: 0.9rem; font-weight: 500;
-    background: var(--bp-deep); white-space: nowrap;
-  }
-  /* Arrows point INTO each step, so a wrapped line still starts with its incoming arrow */
-  .strip li + li::after {
-    content: ''; position: absolute; left: -28px; top: 50%; width: 20px; border-top: 1.5px solid var(--line);
-  }
-  .strip li + li::before {
-    content: ''; position: absolute; left: -10px; top: 50%; margin-top: -5px; border: 5px solid transparent; border-left: 7px solid var(--line); border-right: 0;
-  }
-  .strip .strip-end { margin-left: 4px; border: 0; background: none; padding-left: 0; display: inline-flex; align-items: center; gap: 10px; font-weight: 700; color: var(--accent); }
-  .strip-end .ev { width: 24px; height: 24px; border-color: var(--accent); }
-
-  .gemi { display: grid; grid-template-columns: 1fr auto; gap: 24px 40px; align-items: center; }
-  .more { margin-top: 18px; font-weight: 700; }
-  .phones { display: flex; gap: 14px; padding-top: 18px; }
-  .phone-link { display: block; flex: none; transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
-  .phone-link:hover { transform: translateY(-4px); }
-  .phone-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-  @media (prefers-reduced-motion: reduce) { .phone-link { transition: none; } .phone-link:hover { transform: none; } }
-  .phone {
-    width: 150px; height: auto; border-radius: 18px 18px 0 0; border: 2px solid var(--line); border-bottom: 0; display: block; flex: none;
-    mask-image: linear-gradient(#000 72%, transparent);
-  }
-
-  .earlier { margin-top: 48px; }
-  .sub-h { font-size: 1.125rem; font-weight: 700; color: #fff; margin-bottom: 18px; }
-  .earlier ul { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 28px; }
-  .earlier li { border-top: 1.5px solid var(--muted); padding-top: 14px; }
-  .e-meta { font-size: 0.9rem; color: var(--muted); }
-  .e-meta b { color: var(--line); }
-  .e-title { font-weight: 700; margin-top: 2px; }
-  .e-text { color: var(--muted); font-size: 0.95rem; margin-top: 2px; }
-
-  @media (max-width: 980px) {
-    .did, .lane .did { grid-template-columns: 1fr; }
-    .gemi { grid-template-columns: 1fr; }
-    .earlier ul { grid-template-columns: 1fr; gap: 20px; }
-  }
-
-  @media (max-width: 640px) {
-    .did, .lane .did { grid-template-columns: 1fr; }
-    .lane { grid-template-columns: 40px 1fr; }
-    .strip { gap: 8px; padding-left: 0; }
-    .strip li:first-child { margin-left: 0; }
-    .strip li + li::before, .strip li + li::after { display: none; }
-    .phones { overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
-    .phone { width: 160px; }
-    .phone-link { scroll-snap-align: start; }
+  @media (max-width: 860px) {
+    .projects { margin-top: 44px; }
+    .projects > li { grid-template-columns: 1fr; padding-block: 32px; }
+    .sub { margin-top: 56px; }
+    .rows li { grid-template-columns: 1fr auto; gap: 4px 24px; }
+    .rows p { grid-column: 1 / -1; grid-row: 2; }
   }
 </style>

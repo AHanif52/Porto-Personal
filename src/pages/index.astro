@@ -1,27 +1,25 @@
 ---
-// Content lives in src/data/content.ts. Each section is a component in src/components.
-// The page is drawn as a BPMN diagram: start event (hero), lanes, events, end event (contact).
+// Content lives in src/data/content.ts. Each section is one component in src/components.
 import Base from '../layouts/Base.astro';
-import Header from '../components/Header.astro';
+import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
+import Featured from '../components/Featured.astro';
 import Work from '../components/Work.astro';
-import Path from '../components/Path.astro';
+import Gemi from '../components/Gemi.astro';
+import Experience from '../components/Experience.astro';
 import Toolkit from '../components/Toolkit.astro';
 import Contact from '../components/Contact.astro';
 ---
 
 <Base>
-  <Header />
+  <Nav />
   <main id="main">
     <Hero />
-    <div class="spine">
-      <Work />
-      <Path />
-      <Toolkit />
-    </div>
+    <Featured />
+    <Work />
+    <Gemi />
+    <Experience />
+    <Toolkit />
     <Contact />
   </main>
-  <footer class="wrap foot">
-    <p>Mohammad Aufa Hanif, Tegal, Indonesia</p>
-  </footer>
 </Base>

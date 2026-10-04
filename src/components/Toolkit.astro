@@ -1,60 +1,69 @@
 ---
-import { toolkit, codeProjects } from '../data/content';
+import { toolkit, toolkitMore, codeProjects } from '../data/content';
 ---
 
-<!-- Toolkit: BPMN data objects -->
-<section class="wrap block" aria-labelledby="tools-h">
-  <h2 id="tools-h" class="node-h">Toolkit</h2>
-  <div class="objects">
+<section id="toolkit" class="wrap sec" aria-labelledby="tools-h">
+  <h2 id="tools-h">Toolkit</h2>
+
+  <!-- Core skills in the order a project uses them: one leaning strip of plates, like a menu row -->
+  <div class="core" data-reveal>
     {toolkit.map((t) => (
-      <div class="dobj">
-        <h3>{t.group}</h3>
-        <p>{t.items.join(', ')}</p>
+      <div>
+        <h3 class="slant">{t.group}</h3>
+        <ul>
+          {t.items.map((i) => <li>{i}</li>)}
+        </ul>
+        <p class="proof">{t.proof}</p>
       </div>
     ))}
   </div>
-  <div class="subprocess">
-    <h3>Before analysis, I wrote code</h3>
-    <ul>
-      {codeProjects.map((p) => (
-        <li><a href={p.url} target="_blank" rel="noopener">{p.name}<span class="sr"> (new tab)</span></a> <span>{p.kind}</span></li>
-      ))}
-    </ul>
-    <span class="plus" aria-hidden="true">+</span>
-  </div>
+
+  <dl class="more" data-reveal>
+    {toolkitMore.map((t) => (
+      <div>
+        <dt class="slant">{t.group}</dt>
+        <dd>{t.items.join(', ')}</dd>
+      </div>
+    ))}
+  </dl>
+
+  <p class="code">
+    Before analysis, I wrote code:
+    {codeProjects.map((p) => (
+      <a class="link" href={p.url} target="_blank" rel="noopener">{p.name}<span class="sr"> (GitHub, new tab)</span></a>
+    ))}
+  </p>
 </section>
 
-<style is:global>
-  /* Toolkit as BPMN data objects (page with a folded corner) */
-  .objects { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .dobj {
-    position: relative; padding: 14px 26px 16px 16px; background: var(--bp-deep);
-    border: 1.5px solid var(--line);
-    clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
-  }
-  .dobj::after {
-    content: ''; position: absolute; right: 0; top: 0; width: 18px; height: 18px;
-    background: linear-gradient(225deg, transparent calc(50% - 1px), var(--line) calc(50% - 1px), var(--line) calc(50% + 1px), var(--bp) calc(50% + 1px));
-    border-left: 1.5px solid var(--line); border-bottom: 1.5px solid var(--line);
-  }
-  .dobj h3 { font-size: 0.95rem; font-weight: 700; color: #fff; }
-  .dobj p { font-size: 0.95rem; margin-top: 4px; color: var(--muted); }
+<style>
+  .core { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 10px; margin-top: 64px; padding-inline: 10px; }
+  h3 { position: relative; isolation: isolate; font-size: 1.7rem; letter-spacing: 0.02em; padding: 10px 26px; }
+  h3::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--surface); transform: skewX(var(--skew)); }
+  h3::before { transition: background 0.25s var(--ease), box-shadow 0.25s var(--ease); }
+  /* The first plate starts selected; pointing at another column moves the selection there */
+  .core > div:first-child h3, .core > div:hover h3 { color: var(--bg); }
+  .core > div:first-child h3::before, .core > div:hover h3::before { background: var(--ink); box-shadow: 8px 7px 0 var(--acc); }
+  .core:hover > div:first-child:not(:hover) h3 { color: var(--ink); }
+  .core:hover > div:first-child:not(:hover) h3::before { background: var(--surface); box-shadow: none; }
+  .core ul { margin-top: 26px; padding-left: 16px; display: grid; gap: 8px; font-size: 1.2rem; }
+  /* One line of evidence per skill group, marked with the same leaning tick as the project lists */
+  .proof { position: relative; margin: 22px 12px 0 16px; padding-left: 26px; color: var(--mute); font-size: 1rem; }
+  .proof::before { content: ''; position: absolute; left: 2px; top: 0.62em; width: 12px; height: 6px; background: var(--acc); transform: skewX(-32deg); }
 
-  /* Collapsed sub-process: rounded task with a [+] marker */
-  .subprocess { position: relative; margin-top: 24px; max-width: 560px; border: 2px solid var(--line); border-radius: var(--radius); padding: 18px 20px 38px; }
-  .subprocess h3 { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
-  .subprocess ul { display: flex; flex-wrap: wrap; gap: 8px 22px; }
-  .subprocess li span { color: var(--muted); font-size: 0.875rem; }
-  .plus {
-    position: absolute; left: 50%; bottom: -2px; width: 22px; height: 22px; margin-left: -11px;
-    border: 2px solid var(--line); display: grid; place-items: center; font-weight: 700; line-height: 1;
-  }
+  .more { margin: 72px 0 0; border-top: 2px solid var(--ink); padding-top: 28px; display: grid; gap: 14px; }
+  .more div { display: grid; grid-template-columns: 220px 1fr; gap: 4px 32px; align-items: baseline; }
+  dt { font-size: 1.3rem; letter-spacing: 0.02em; }
+  dd { color: var(--mute); }
+
+  .code { margin-top: 56px; display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: baseline; color: var(--mute); }
+  .code a { color: var(--ink); }
 
   @media (max-width: 980px) {
-    .objects { grid-template-columns: 1fr 1fr; }
+    .core { grid-template-columns: 1fr 1fr; gap: 44px 10px; }
   }
-
-  @media (max-width: 640px) {
-    .objects { grid-template-columns: 1fr; }
+  @media (max-width: 560px) {
+    .core { grid-template-columns: 1fr; margin-top: 44px; }
+    .more { margin-top: 56px; }
+    .more div { grid-template-columns: 1fr; }
   }
 </style>

@@ -1,0 +1,33 @@
+---
+import { Image } from 'astro:assets';
+import { gemi } from '../data/content';
+---
+
+<section class="wrap sec" aria-labelledby="gemi-h">
+  <div class="grid" data-reveal>
+    <div>
+      <p class="meta">{gemi.meta}</p>
+      <h2 id="gemi-h">{gemi.title}</h2>
+      <p class="lead">{gemi.summary}</p>
+      <p class="more"><a class="link" href={gemi.url} target="_blank" rel="noopener">Source on GitHub<span class="sr"> (new tab)</span></a></p>
+    </div>
+    <div class="shots">
+      {gemi.shots.map((s) => <Image src={s.src} alt={s.alt} widths={[240, 480]} sizes="(max-width: 860px) 30vw, 220px" />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid { display: grid; grid-template-columns: 5fr 6fr; gap: 80px; align-items: center; }
+  h2 { max-width: 12ch; }
+  .more { margin-top: 32px; }
+  .shots { display: flex; gap: 20px; padding-top: 28px; }
+  .shots :global(img) { width: calc((100% - 40px) / 3); border-radius: 22px; }
+  .shots :global(img:nth-child(2)) { transform: translateY(-28px); }
+
+  @media (max-width: 860px) {
+    .grid { grid-template-columns: 1fr; gap: 56px; }
+    .shots { gap: 12px; }
+    .shots :global(img) { width: calc((100% - 24px) / 3); border-radius: 14px; }
+  }
+</style>

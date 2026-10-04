@@ -1,0 +1,48 @@
+---
+import { site } from '../data/content';
+import Logo from './Logo.astro';
+---
+
+<header class="top">
+  <div class="wrap bar">
+    <a class="brand" href="#top"><Logo />{site.name}</a>
+    <nav aria-label="Main">
+      <a href="#work">Work</a>
+      <a href="#experience">Experience</a>
+      <a href="#toolkit">Toolkit</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="btn btn-ghost btn-sm" href={site.cv} target="_blank" rel="noopener">Download CV<span class="sr"> (PDF, new tab)</span></a>
+  </div>
+</header>
+
+<style>
+  .top { position: sticky; top: 0; z-index: 10; background: var(--bg); }
+  /* A hairline appears once the page has scrolled, so the bar reads as separate from the content under it */
+  @supports (animation-timeline: scroll()) {
+    .top { animation: edge linear both; animation-timeline: scroll(root); animation-range: 0 120px; }
+    @keyframes edge { to { box-shadow: 0 1px 0 var(--line); } }
+  }
+  .bar { display: flex; align-items: center; gap: 24px; height: 72px; }
+  .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 600; font-size: 1.125rem; text-decoration: none; margin-right: auto; }
+  .brand :global(.logo) { height: 30px; width: auto; }
+  /* On hover the accent bar pushes out to the right, the "specs out" gesture */
+  .brand :global(.bar) { transform-origin: 14px 32px; transition: transform 0.3s var(--ease); }
+  .brand:hover :global(.bar) { transform: scaleX(1.22); }
+  nav { display: flex; gap: 6px; }
+  /* Hover selects the row the way a game menu does: a leaning plate slides in behind the label */
+  nav a {
+    position: relative; isolation: isolate; padding: 6px 16px; font-weight: 500; font-size: 1rem; text-decoration: none;
+    transition: color 0.2s;
+  }
+  nav a::before {
+    content: ''; position: absolute; inset: 0; z-index: -1; background: var(--ink); box-shadow: 5px 5px 0 var(--acc);
+    transform: skewX(var(--skew)) scaleX(0); transform-origin: left; transition: transform 0.3s var(--ease);
+  }
+  nav a:hover, nav a:focus-visible { color: var(--bg); }
+  nav a:hover::before, nav a:focus-visible::before { transform: skewX(var(--skew)) scaleX(1); }
+
+  @media (max-width: 860px) {
+    nav { display: none; }
+  }
+</style>

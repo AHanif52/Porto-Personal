@@ -1,0 +1,31 @@
+---
+import { cv } from '../data/content';
+---
+
+<!-- End event -->
+<section id="contact" class="wrap contact" aria-labelledby="contact-h">
+  <span class="ev ev-end ev-big" aria-hidden="true"></span>
+  <h2 id="contact-h">Hiring a Business, System or Project Analyst?</h2>
+  <p class="c-sub">Based in Indonesia. Email is the fastest way to reach me.</p>
+  <a class="mail" href="mailto:aufahanif85@gmail.com">aufahanif85@gmail.com</a>
+  <p class="elsewhere">
+    <a href="https://www.linkedin.com/in/aufahanif/" target="_blank" rel="noopener">LinkedIn<span class="sr"> (new tab)</span></a>
+    <a href="https://github.com/AHanif52" target="_blank" rel="noopener">GitHub<span class="sr"> (new tab)</span></a>
+    <a href={cv} target="_blank" rel="noopener">Download CV<span class="sr"> (PDF, new tab)</span></a>
+  </p>
+</section>
+
+<style is:global>
+  /* End event */
+  .contact { margin-top: 160px; padding-left: 40px; position: relative; }
+  .contact .ev-big { position: absolute; left: -12px; top: -84px; }
+  .contact h2 { font-size: clamp(1.9rem, 4.4vw, 3.2rem); line-height: 1.08; font-weight: 800; letter-spacing: -0.025em; max-width: 18ch; color: #fff; }
+  .c-sub { margin-top: 12px; color: var(--muted); }
+  .mail { display: inline-block; margin-top: 20px; font-size: clamp(1.3rem, 3.6vw, 2.2rem); font-weight: 800; text-decoration-thickness: 5px; text-underline-offset: 8px; overflow-wrap: anywhere; }
+  .elsewhere { margin-top: 28px; display: flex; gap: 24px; flex-wrap: wrap; font-weight: 500; }
+
+  @media (max-width: 640px) {
+    .contact { padding-left: 0; }
+    .contact .ev-big { position: static; display: block; margin-bottom: 20px; }
+  }
+</style>

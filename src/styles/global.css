@@ -1,0 +1,116 @@
+/*
+  Blueprint theme: one fixed theme on purpose (the blueprint IS the identity).
+  Yellow means only three things: me, an outcome, or the main action.
+*/
+:root {
+  --bp: #0f3a63;
+  --bp-deep: #0b2e50;
+  --bp-lane: rgb(255 255 255 / 0.035);
+  --line: #d7e6f7;
+  --muted: #9fb8d4;
+  --faint: rgb(215 230 247 / 0.28);
+  --grid: rgb(215 230 247 / 0.07);
+  --accent: #ffd84a;
+  --accent-ink: #3a2e00;
+  --radius: 10px;
+  --sans: 'Schibsted Grotesk Variable', system-ui, sans-serif;
+  --hand: 'Kalam', 'Comic Sans MS', cursive;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  color: var(--line);
+  font: 400 1.0625rem/1.6 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--bp);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+    linear-gradient(rgb(215 230 247 / 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(215 230 247 / 0.03) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+}
+h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: var(--line); text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+a:hover { color: var(--accent); }
+a:focus-visible, .diagram-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.wrap { width: min(1160px, 100% - 32px); margin-inline: auto; }
+.skip { position: absolute; left: -999px; }
+.skip:focus { left: 16px; top: 16px; background: var(--bp-deep); padding: 8px 12px; z-index: 10; }
+
+/* BPMN events: thin ring = start, thick ring = end */
+.ev { display: inline-block; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line); flex: none; }
+.ev-sm { width: 14px; height: 14px; }
+.ev-end { border-width: 4px; }
+.ev-big { width: 56px; height: 56px; border-width: 7px; border-color: var(--accent); }
+/* Diagrams: real BPMN in SVG. Text stays text, so it is readable by people and parsers. */
+.diagram-scroll { overflow-x: auto; }
+.diagram svg, .artifact svg { display: block; width: 100%; height: auto; font-family: var(--sans); }
+.diagram figcaption, .artifact figcaption { margin-top: 12px; font-size: 0.9rem; color: var(--muted); }
+.pool-r { fill: rgb(11 46 80 / 0.55); stroke: var(--line); stroke-width: 2; }
+.lane-me { fill: rgb(255 216 74 / 0.06); }
+.sep { stroke: var(--line); stroke-width: 2; fill: none; }
+.sep.thin { stroke-width: 1.5; }
+.lane-t { fill: var(--muted); font-size: 13px; font-weight: 700; text-anchor: middle; }
+.lane-t.xs { font-size: 11px; }
+.lane-t.me { fill: var(--accent); }
+.task-r { fill: var(--bp-deep); stroke: var(--line); stroke-width: 2; }
+.task-r.me { stroke: var(--accent); stroke-width: 2.5; }
+.lbl { fill: #fff; font-size: 15px; font-weight: 700; text-anchor: middle; }
+.lbl.s13 { font-size: 13px; }
+.lbl.sm { fill: var(--muted); font-size: 12px; font-weight: 500; }
+.cap { fill: var(--muted); font-size: 13px; text-anchor: middle; }
+.cap.left { text-anchor: start; }
+.cap.end-l { text-anchor: end; }
+.cap.strong { fill: var(--accent); font-weight: 700; font-size: 14px; }
+.ev-s { fill: var(--bp-deep); stroke: var(--line); stroke-width: 2; }
+.ev-e { fill: var(--bp-deep); stroke: var(--accent); stroke-width: 5; }
+.gw { fill: var(--bp-deep); stroke: var(--line); stroke-width: 2; }
+.gw-x { stroke: var(--line); stroke-width: 3; stroke-linecap: round; }
+.flow { fill: none; stroke: var(--line); stroke-width: 2; }
+.flow.loop { stroke: var(--muted); }
+.arw { fill: var(--line); }
+.assoc { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 4 4; fill: none; }
+.stk { fill: var(--accent); filter: drop-shadow(0 8px 10px rgb(0 0 0 / 0.35)); }
+.hand { font-family: var(--hand); font-size: 18px; fill: var(--accent-ink); }
+.hand.sm { font-size: 13px; opacity: 0.75; }
+.hand.md { font-size: 16px; }
+
+/* Spine: the sequence flow that runs through the page, drawn as you scroll */
+.spine { position: relative; }
+.spine::before {
+  content: ''; position: absolute; top: -40px; bottom: -60px; left: max(16px, calc(50% - 580px));
+  border-left: 2px solid var(--faint); transform-origin: top;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .spine::before { animation: draw linear both; animation-timeline: view(); animation-range: entry 10% exit 40%; }
+    @keyframes draw { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  }
+}
+.block { padding-left: 40px; }
+.block + .block { margin-top: 128px; }
+.node-h {
+  position: relative; display: inline-block; font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 800;
+  letter-spacing: -0.02em; margin-bottom: 36px; color: #fff;
+}
+/* A waypoint on the spine, not an event */
+.node-h::before {
+  content: ''; position: absolute; left: -45px; top: 50%; width: 10px; height: 10px; margin-top: -5px;
+  border-radius: 50%; background: var(--line);
+}
+
+.foot { padding-block: 72px 40px; color: var(--muted); font-size: 0.9rem; }
+
+@media (max-width: 640px) {
+  .block { padding-left: 28px; }
+  .node-h::before { left: -33px; }
+  .block + .block { margin-top: 96px; }
+}

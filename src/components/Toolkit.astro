@@ -1,0 +1,60 @@
+---
+import { toolkit, codeProjects } from '../data/content';
+---
+
+<!-- Toolkit: BPMN data objects -->
+<section class="wrap block" aria-labelledby="tools-h">
+  <h2 id="tools-h" class="node-h">Toolkit</h2>
+  <div class="objects">
+    {toolkit.map((t) => (
+      <div class="dobj">
+        <h3>{t.group}</h3>
+        <p>{t.items.join(', ')}</p>
+      </div>
+    ))}
+  </div>
+  <div class="subprocess">
+    <h3>Before analysis, I wrote code</h3>
+    <ul>
+      {codeProjects.map((p) => (
+        <li><a href={p.url} target="_blank" rel="noopener">{p.name}<span class="sr"> (new tab)</span></a> <span>{p.kind}</span></li>
+      ))}
+    </ul>
+    <span class="plus" aria-hidden="true">+</span>
+  </div>
+</section>
+
+<style is:global>
+  /* Toolkit as BPMN data objects (page with a folded corner) */
+  .objects { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .dobj {
+    position: relative; padding: 14px 26px 16px 16px; background: var(--bp-deep);
+    border: 1.5px solid var(--line);
+    clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
+  }
+  .dobj::after {
+    content: ''; position: absolute; right: 0; top: 0; width: 18px; height: 18px;
+    background: linear-gradient(225deg, transparent calc(50% - 1px), var(--line) calc(50% - 1px), var(--line) calc(50% + 1px), var(--bp) calc(50% + 1px));
+    border-left: 1.5px solid var(--line); border-bottom: 1.5px solid var(--line);
+  }
+  .dobj h3 { font-size: 0.95rem; font-weight: 700; color: #fff; }
+  .dobj p { font-size: 0.95rem; margin-top: 4px; color: var(--muted); }
+
+  /* Collapsed sub-process: rounded task with a [+] marker */
+  .subprocess { position: relative; margin-top: 24px; max-width: 560px; border: 2px solid var(--line); border-radius: var(--radius); padding: 18px 20px 38px; }
+  .subprocess h3 { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .subprocess ul { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+  .subprocess li span { color: var(--muted); font-size: 0.875rem; }
+  .plus {
+    position: absolute; left: 50%; bottom: -2px; width: 22px; height: 22px; margin-left: -11px;
+    border: 2px solid var(--line); display: grid; place-items: center; font-weight: 700; line-height: 1;
+  }
+
+  @media (max-width: 980px) {
+    .objects { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .objects { grid-template-columns: 1fr; }
+  }
+</style>

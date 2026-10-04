@@ -1,0 +1,88 @@
+---
+import { featured } from '../data/content';
+import ApprovalFlow from './diagrams/ApprovalFlow.astro';
+import DashboardWireframe from './diagrams/DashboardWireframe.astro';
+---
+
+<article class="feature">
+  <p class="f-meta"><b>{featured.client}</b> {featured.year}</p>
+  <h3>{featured.title}</h3>
+  <p class="summary">{featured.summary}</p>
+
+  <dl class="figs">
+    {featured.figures.map((f) => (
+      <div>
+        <dt>{f.label}</dt>
+        <dd>{f.n}</dd>
+      </div>
+    ))}
+  </dl>
+
+  <div class="art-tabs" role="tablist" aria-label="Project artifacts">
+    <button type="button" role="tab" id="tab-process" aria-controls="art-process" aria-selected="true">Process (BPMN)</button>
+    <button type="button" role="tab" id="tab-dash" aria-controls="art-dash" aria-selected="false" tabindex="-1">Dashboard wireframe</button>
+  </div>
+  <figure class="artifact" id="art-process" role="tabpanel" aria-labelledby="tab-process">
+    <ApprovalFlow />
+    <figcaption>Simplified and anonymised. The real flow has more roles, checks and notifications.</figcaption>
+  </figure>
+  <figure class="artifact" id="art-dash" role="tabpanel" aria-labelledby="tab-dash">
+    <DashboardWireframe />
+    <figcaption>Wireframe recreated from my clickable mockup. Layout reuses the client's existing dashboard pattern, so no new components were needed.</figcaption>
+  </figure>
+  <script>
+    // Two artifacts, one visible at a time. Without JS both stay visible.
+    const tabs = [...document.querySelectorAll('.art-tabs [role=tab]')];
+    const show = (t) => tabs.forEach((x) => {
+      const on = x === t;
+      x.setAttribute('aria-selected', String(on));
+      x.tabIndex = on ? 0 : -1;
+      document.getElementById(x.getAttribute('aria-controls')).hidden = !on;
+    });
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => show(t));
+      t.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+        show(next); next.focus();
+      });
+    });
+    show(tabs[0]);
+  </script>
+
+  <ul class="did">
+    {featured.did.map((d) => <li>{d}</li>)}
+  </ul>
+</article>
+
+<style is:global>
+  /* Featured project: the peak of the page */
+  .feature { border: 2px solid var(--line); border-radius: 4px; background: rgb(11 46 80 / 0.55); padding: clamp(24px, 4vw, 48px); }
+  .f-meta { color: var(--muted); }
+  .f-meta b { color: var(--line); margin-right: 8px; }
+  .feature h3 { font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.12; font-weight: 800; letter-spacing: -0.02em; color: #fff; margin-top: 8px; max-width: 22ch; }
+  .summary { margin-top: 12px; max-width: 64ch; }
+  .figs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin: 28px 0; padding-block: 24px; border-block: 1.5px solid var(--faint); }
+  .figs div { display: flex; flex-direction: column; gap: 6px; }
+  .figs dd { order: -1; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--accent); }
+  .figs dt { color: var(--muted); font-size: 0.95rem; }
+  .artifact { margin-bottom: 28px; }
+  .art-tabs { display: flex; gap: 4px; margin-bottom: 14px; }
+  .art-tabs button {
+    font: 600 0.95rem var(--sans); color: var(--muted); background: none; cursor: pointer;
+    border: 1.5px solid var(--muted); border-radius: 8px; padding: 8px 14px;
+  }
+  .art-tabs button:hover { border-color: var(--line); color: var(--line); }
+  .art-tabs button[aria-selected='true'] { color: var(--bp-deep); background: var(--line); border-color: var(--line); }
+  .art-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .art-scroll svg { min-width: 640px; }
+
+  @media (max-width: 980px) {
+    .figs { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .feature { padding: 20px; }
+    .art-scroll { margin-inline: -20px; padding-inline: 20px; mask-image: linear-gradient(90deg, #000 85%, transparent); }
+  }
+</style>

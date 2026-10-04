@@ -1,0 +1,52 @@
+---
+// Simplified, anonymised approval workflow of the featured project.
+---
+
+<div class="diagram-scroll art-scroll" tabindex="0" role="region" aria-label="Diagram: simplified approval workflow">
+  <svg viewBox="0 0 760 256" role="img" aria-labelledby="art-t">
+    <title id="art-t">Simplified approval workflow: the vendor submits a package, a reviewer verifies it, rejected packages go back for revision, then an approver, regional and HQ construction sign off before handover to maintenance.</title>
+    <defs>
+      <marker id="arw-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0L10 5L0 10z" class="arw" />
+      </marker>
+    </defs>
+    <rect x="1" y="1" width="758" height="254" rx="4" class="pool-r" />
+    <path d="M1 64H759M1 128H759M1 192H759M36 1V255" class="sep thin" />
+    <text transform="translate(22 32) rotate(-90)" class="lane-t xs">Vendor</text>
+    <text transform="translate(22 96) rotate(-90)" class="lane-t xs">Review</text>
+    <text transform="translate(22 160) rotate(-90)" class="lane-t xs">Sign-off</text>
+    <text transform="translate(22 224) rotate(-90)" class="lane-t xs">Maint.</text>
+
+    <circle cx="60" cy="32" r="12" class="ev-s" />
+    <path d="M72 32H98" class="flow" marker-end="url(#arw-a)" />
+    <rect x="100" y="14" width="124" height="36" rx="8" class="task-r" />
+    <text x="162" y="37" class="lbl s13">Submit package</text>
+    <path d="M162 50V76" class="flow" marker-end="url(#arw-a)" />
+    <rect x="112" y="78" width="100" height="36" rx="8" class="task-r" />
+    <text x="162" y="101" class="lbl s13">Verify</text>
+    <path d="M212 96H256" class="flow" marker-end="url(#arw-a)" />
+    <path d="M280 74L302 96L280 118L258 96Z" class="gw" />
+    <path d="M273 89L287 103M287 89L273 103" class="gw-x" />
+    <path d="M280 74V32H226" class="flow loop" marker-end="url(#arw-a)" />
+    <text x="288" y="56" class="cap left">Revise</text>
+    <path d="M302 96H350" class="flow" marker-end="url(#arw-a)" />
+    <text x="326" y="88" class="cap">OK</text>
+    <rect x="352" y="78" width="100" height="36" rx="8" class="task-r" />
+    <text x="402" y="101" class="lbl s13">Approve</text>
+    <path d="M452 96H515V140" class="flow" marker-end="url(#arw-a)" />
+    <rect x="450" y="142" width="130" height="36" rx="8" class="task-r" />
+    <text x="515" y="165" class="lbl s13">Regional sign-off</text>
+    <path d="M580 160H610" class="flow" marker-end="url(#arw-a)" />
+    <rect x="612" y="142" width="110" height="36" rx="8" class="task-r" />
+    <text x="667" y="165" class="lbl s13">HQ sign-off</text>
+    <path d="M667 178V210" class="flow" marker-end="url(#arw-a)" />
+    <circle cx="667" cy="224" r="12" class="ev-e" />
+    <text x="645" y="229" class="cap end-l">Handover</text>
+
+    <!-- Sits inside one lane so it never covers a lane line -->
+    <g transform="rotate(-1.5 230 160)">
+      <rect x="56" y="140" width="350" height="38" class="stk" />
+      <text x="70" y="165" class="hand md">Client approved the mockup journey, Jun 2026</text>
+    </g>
+  </svg>
+</div>

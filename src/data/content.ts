@@ -111,7 +111,7 @@ export const experience = [
         ],
       },
       { when: 'Dec 2024 - Jun 2026', what: 'System Analyst', where: 'PT Javan Cipta Solusi', note: 'BPMN, ERD and mockups for client workflows, API and UI testing, production issue triage and system documentation.' },
-      { when: 'Jul - Dec 2024', what: 'System Analyst Intern', where: 'PT Javan Cipta Solusi', note: 'Moved from programming to analysis.' },
+      { when: 'Aug - Dec 2024', what: 'System Analyst Intern', where: 'PT Javan Cipta Solusi', note: 'Moved from programming to analysis.' },
       { when: 'Jun - Jul 2024', what: 'PHP Programmer Intern', where: 'PT Javan Cipta Solusi', note: 'APIs and pages for an internal QA tool.' },
     ],
   },
